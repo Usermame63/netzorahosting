@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NetZora Hosting - Giriş / Qeydiyyat</title>
+<style>
+  @keyframes moveText {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    margin: 0; padding: 20px;
+    text-align: center;
+    color: white;
+    overflow-x: hidden;
+    position: relative;
+    height: 100vh;
+  }
+
+  .background-text {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 200%;
+    font-size: 15vw;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    transform: translateY(-50%);
+    animation: moveText 20s linear infinite;
+    z-index: 0;
+  }
+
+  header, main {
+    position: relative;
+    z-index: 1;
+    background: rgba(0,0,0,0.4);
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    color: white;
+  }
+
+  button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 10px 10px 0;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background: #45a049;
+  }
+
+  .login-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: black;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-icon svg {
+    fill: white;
+    width: 24px;
+    height: 24px;
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    z-index: 20;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal {
+    background: rgba(0,0,0,0.85);
+    padding: 25px 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    color: white;
+    text-align: left;
+  }
+
+  .modal h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+
+  .modal label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .modal input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+  }
+
+  .modal input[type="submit"] {
+    background: #4CAF50;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .modal input[type="submit"]:hover {
+    background: #45a049;
+  }
+
+  .close-btn {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    float: right;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+
+  .alert {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #4CAF50;
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .alert.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .welcome-msg {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.7);
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    z-index: 15;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="background-text">NetZora Hosting NetZora Hosting NetZora Hosting</div>
+
+<header>
+  <h1>Hoş geldin!</h1>
+</header>
+
+<main>
+  <p>Bu, sana özel hazırlanmış giriş / qeydiyyat sayfasıdır.</p>
+  <button onclick="window.open('https://discord.gg/u3NMCD6cP9', '_blank')">Discord Sunucumuza Katıl</button>
+</main>
+
+<div class="welcome-msg" id="welcomeMsg">Hoş geldin!</div>
+
+<!-- Login Icon -->
+<div class="login-icon" id="loginIcon" title="Giriş Yap / Qeydiyyat">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+  </svg>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="close-btn" id="closeModal">X</button>
+
+    <div id="loginFormContainer" style="display:none;">
+      <h2>Giriş Yap</h2>
+      <form id="loginForm">
+        <label for="usernameLogin">Kullanıcı Adı:</label>
+        <input type="text" id="usernameLogin" name="usernameLogin" required />
+
+        <label for="passwordLogin">Şifre:</label>
+        <input type="password" id="passwordLogin" name="passwordLogin" required />
+
+        <input type="submit" value="Giriş" />
+      </form>
+    </div>
+
+    <div id="registerFormContainer" style="display:none;">
+      <h2>Qeydiyyatdan Keç</h2>
+      <form id="registerForm">
+        <label for="usernameRegister">Yeni Kullanıcı Adı:</label>
+        <input type="text" id="usernameRegister" name="usernameRegister" required />
+
+        <label for="passwordRegister">Yeni Şifre:</label>
+        <input type="password" id="passwordRegister" name="passwordRegister" required />
+
+        <input type="submit" value="Qeydiyyatdan Keç" />
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="alert" id="alertBox"></div>
+
+<script>
+  const loginIcon = document.getElementById('loginIcon');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const closeModalBtn = document.getElementById('closeModal');
+  const alertBox = document.getElementById('alertBox');
+  const welcomeMsg = document.getElementById('welcomeMsg');
+
+  let loggedInUser = localStorage.getItem('loggedInUser');
+
+  function showAlert(message) {
+    alertBox.textContent = message;
+    alertBox.classList.add('show');
+    setTimeout(() => {
+      alertBox.classList.remove('show');
+    }, 3000);
+  }
+
+  function showWelcomeMessage(username) {
+    welcomeMsg.textContent = `Hoş geldin, ${username}!`;
+    welcomeMsg.style.display = 'block';
+  }
+
+  // Modal açanda formları uyğun göstərmək üçün
+  function showLoginForm() {
+    document.getElementById('loginFormContainer').style.display = 'block';
+    document.getElementById('registerFormContainer').style.display = 'none';
+  }
+  function showRegisterForm() {
+    document.getElementById('loginFormContainer').style.display = 'none';
+    document.getElementById('registerFormContainer').style.display = 'block';
+  }
+
+  // İstifadəçi qeydiyyatdan keçibsə, giriş formunu göstər
+  // yoxdursa qeydiyyat formunu göstər
+  function openModal() {
+    modalOverlay.style.display = 'flex';
+
+    // İstifadəçi adı inputda nə varsa təmizlə
+    document.getElementById('loginForm').reset();
+    document.getElementById('registerForm').reset();
+
+    if (loggedInUser) {
+      // Artıq giriş etmiş istifadəçi varsa modal açmayaq
+      modalOverlay.style.display = 'none';
+      return;
+    }
+
+    // Yoxlamaq üçün input sahəsini boş saxlayırıq, ona görə qeydiyyatdan yox, localstorage-da yoxlayırıq
+
+    // Qeydiyyat formunu göstərmək üçün əvvəlcə yoxlayaq
+    // Bu nümunədə istifadəçi adı ilə yoxlayırıq
+
+    // Bizə user_ prefiksi ilə user var mı yoxlamaq üçün:
+    // localStorage.getItem('user_'+username) yoxlamasını loginda edirik,
+    // amma burada yoxlamaq üçün giriş formunu göstəririk və istifadəçi yazmalıdır.
+    // Biz istifadəçiyə soruşacağıq, istifadəçi daxil olanda yoxlanacaq.
+
+    // Ona görə modal açanda qeydiyyat yox, login formu göstərək ilk əvvəl.
+    showLoginForm();
+  }
+
+  loginIcon.addEventListener('click', openModal);
+
+  closeModalBtn.addEventListener('click', () => {
+    modalOverlay.style.display = 'none';
+  });
+
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+      modalOverlay.style.display = 'none';
+    }
+  });
+
+  // İstifadəçi artıq giriş etmişsə onu göstər və login iconu gizlət
+  if (loggedInUser) {
+    showWelcomeMessage(loggedInUser);
+    loginIcon.style.display = 'none';
+  }
+
+  // Giriş formu submit
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const username = this.usernameLogin.value.trim();
+    const password = this.passwordLogin.value.trim();
+
+    const userDataJSON = localStorage.getItem('user_' + username);
+    if (!userDataJSON) {
+      showAlert('Kullanıcı bulunamadı! Qeydiyyatdan keçmək üçün formu açırıq.');
+      // İndi qeydiyyat formunu göstər
+      showRegisterForm();
+      return;
+    }
+
+    const userData = JSON.parse(userDataJSON);
+    if (userData.password !== password) {
+      showAlert('Şifre yanlış!');
+      return;
+    }
+
+    // Uğurlu giriş
+    localStorage.setItem('loggedInUser', username);
+    loggedInUser = username;
+    showAlert('Giriş başarılı!');
+    showWelcomeMessage(username);
+    loginIcon.style.display = 'none';
+    modalOverlay.style.display = 'none';
+    this.reset();
+  });
+
+  // Qeydiyyat formu submit
+  document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const username = this.usernameRegister.value.trim();
+    const password = this.passwordRegister.value.trim();
+
+    if (localStorage.getItem('user_' + username)) {
+      showAlert('Bu kullanıcı adı zaten var!');
+      return;
+    }
+
+    const userData = JSON.stringify({username: username, password: password});
+    localStorage.setItem('user_' + username, userData);
+
+    showAlert('Qeydiyyatdan keçdin! İndi giriş olunur...');
+    // Avtomatik giriş
+    localStorage.setItem('loggedInUser', username);
+    loggedInUser = username;
+    showWelcomeMessage(username);
+    loginIcon.style.display = 'none';
+    modalOverlay.style.display = 'none';
+    this.reset();
+  });
+</script>
+
+</body>
+</html>
